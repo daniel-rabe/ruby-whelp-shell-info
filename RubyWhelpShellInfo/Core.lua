@@ -16,6 +16,29 @@ local MAX_TRAININGS     = 6       -- training points available in total (one per
 
 local HEADER = "Ruby Whelp Shell Training"
 
+-- The client names the currencies "Red Whelp (Fire Shot)" and so on. We show the
+-- ability plus what it actually does instead. The keys are matched against the
+-- (lowercased) currency name, so a locale we do not cover simply keeps the
+-- client's own name.
+local ABILITIES = {
+	{ key = "fire shot",          label = "Fire Shot",          role = "Single Target Damage"  },
+	{ key = "lobbing fire nova",  label = "Lobbing Fire Nova",  role = "AoE Damage"            },
+	{ key = "curing whiff",       label = "Curing Whiff",       role = "Single Target Healing" },
+	{ key = "mending breath",     label = "Mending Breath",     role = "AoE Healing"           },
+	{ key = "sleepy ruby warmth", label = "Sleepy Ruby Warmth", role = "Crit Buff"             },
+	{ key = "under red wings",    label = "Under Red Wings",    role = "Haste Buff"            },
+}
+
+local function AbilityLabel(currencyName)
+	local haystack = currencyName:lower()
+	for _, ability in ipairs(ABILITIES) do
+		if haystack:find(ability.key, 1, true) then
+			return ability.label .. " (" .. ability.role .. ")"
+		end
+	end
+	return currencyName
+end
+
 local defaults = {
 	enabled   = true,
 	modifier  = "none",  -- none | shift | ctrl | alt
@@ -95,9 +118,11 @@ local function GetTrainingData()
 			total = total + quantity
 			if info.discovered then anyDiscovered = true end
 
+			local currencyName = (info.name and info.name ~= "" and info.name) or ("Currency #" .. id)
+
 			entries[#entries + 1] = {
 				id         = id,
-				name       = (info.name and info.name ~= "" and info.name) or ("Currency #" .. id),
+				name       = AbilityLabel(currencyName),
 				quantity   = quantity,
 				maxRank    = maxRank,
 				icon       = info.iconFileID,

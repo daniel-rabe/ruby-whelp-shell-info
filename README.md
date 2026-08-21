@@ -16,13 +16,13 @@ every time you want to know how your whelp is trained, just hover the trinket.
 ```
 Ruby Whelp Shell
 ...
-Ruby Whelp Shell Training              6/6 trained
- [icon] Lobbing Fire Nova       ▮▮▮▯▯▯  3/6
- [icon] Fire Shot               ▮▮▯▯▯▯  2/6
- [icon] Mending Breath          ▮▯▯▯▯▯  1/6
- [icon] Curing Whiff            ▯▯▯▯▯▯  0/6
- [icon] Sleepy Ruby Warmth      ▯▯▯▯▯▯  0/6
- [icon] Under Red Wings         ▯▯▯▯▯▯  0/6
+Ruby Whelp Shell Training                          6/6 trained
+ [icon] Lobbing Fire Nova (AoE Damage)       ▮▮▮▯▯▯  3/6
+ [icon] Fire Shot (Single Target Damage)     ▮▮▯▯▯▯  2/6
+ [icon] Mending Breath (AoE Healing)         ▮▯▯▯▯▯  1/6
+ [icon] Curing Whiff (Single Target Healing) ▯▯▯▯▯▯  0/6
+ [icon] Sleepy Ruby Warmth (Crit Buff)       ▯▯▯▯▯▯  0/6
+ [icon] Under Red Wings (Haste Buff)         ▯▯▯▯▯▯  0/6
 ```
 
 * Every whelp ability with its current rank, sorted by rank (highest first).
@@ -30,9 +30,21 @@ Ruby Whelp Shell Training              6/6 trained
 * A maxed ability (6/6) is shown in green, untrained ones are greyed out.
 * The same info is added to the tooltip of the trinket's on-use spell.
 
-The ability names and icons are read from the game client at runtime (via the six hidden
-currencies `2148`–`2153`, which is exactly what the macro above prints), so the addon works
-in every locale and does not rely on a hardcoded ability list.
+The ranks and icons are read from the game client at runtime (via the six hidden currencies
+`2148`–`2153`, which is exactly what the macro above prints). The client calls them
+"Red Whelp (Fire Shot)" and so on; the addon relabels them with the ability and what it does:
+
+| Ability | Effect |
+| --- | --- |
+| Fire Shot | Single Target Damage |
+| Lobbing Fire Nova | AoE Damage |
+| Curing Whiff | Single Target Healing |
+| Mending Breath | AoE Healing |
+| Sleepy Ruby Warmth | Crit Buff |
+| Under Red Wings | Haste Buff |
+
+That relabeling matches on the English ability name. On a locale it does not recognise the
+addon simply keeps the client's own currency name, so nothing breaks.
 
 ## Installation
 
@@ -64,9 +76,8 @@ bump the `## Interface:` number in the `.toc` to your client's value (`/run prin
 
 ## Notes
 
-* The whelp has six possible abilities: **Fire Shot** and **Lobbing Fire Nova** (damage),
-  **Under Red Wings** (haste) and **Sleepy Ruby Warmth** (crit), **Mending Breath** (AoE heal)
-  and **Curing Whiff** (single target heal). Each can be trained up to rank 6, and you have
-  six trainings in total — one per day.
+* Each ability can be trained up to rank 6 (that cap comes from the client's own currency
+  data). The `x/6 trained` total in the header assumes six training points in total, one per
+  day, which is what the community guides describe — it is not something the client reports.
 * `discovered = false` on a currency simply means the client has not flagged it for display
   yet; the rank is still reported correctly, so untrained abilities are listed as `0/6`.
