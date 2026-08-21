@@ -1,0 +1,9 @@
+## Interface: 120100, 120000, 110200
+## Title: Ruby Whelp Shell Info
+## Notes: Shows the Ruby Whelp Shell training progress (whelp ability ranks) directly in the trinket's tooltip.
+## Author: daniel-rabe
+## Version: 1.0.0
+## IconTexture: Interface\Icons\INV_Misc_MonsterScales_15
+## SavedVariables: RubyWhelpShellInfoDB
+
+Core.lua
